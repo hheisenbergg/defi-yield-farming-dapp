@@ -39,8 +39,8 @@ function depositTokens(uint256 _amount) public {
 
   if(isStaking[msg.sender] == true) {
 
-    //   uint toTransfer = calculateYieldTotal(msg.sender);
-    //   totalYield += toTransfer;
+      uint toTransfer = calculateYieldTotal(msg.sender);
+      totalYield[msg.sender] += toTransfer;
   }
 
  //Transfer the tether tokens to this contract address for lending
@@ -73,8 +73,9 @@ function unstakeTokens(uint256 _amount) public{
         'staking balance cannot be less than 0'
         );
 
-    // uint yieldTransfer = calculateYieldTotal(msg.sender);
-    // startTime[msg.sender] = block.timestamp;
+    uint yieldTransfer = calculateYieldTotal(msg.sender);
+    totalYield[msg.sender] += yieldTransfer;
+    startTime[msg.sender] = block.timestamp;
     uint balTransfer = _amount;
     _amount = 0;
 
@@ -108,37 +109,37 @@ function unstakeTokens(uint256 _amount) public{
   }
 
  
-    // function calculateYieldTime(address user) public view returns(uint256){
-    //     uint256 end = block.timestamp;
-    //     uint256 totalTime = end - startTime[user];
-    //     return totalTime;
-    // }
+    function calculateYieldTime(address user) public view returns(uint256){
+        uint256 end = block.timestamp;
+        uint256 totalTime = end - startTime[user];
+        return totalTime;
+    }
 
-    // function calculateYieldTotal(address user) public view returns(uint256) {
-    //     uint256 time = calculateYieldTime(user) * 10**18;
-    //     uint256 rate = 86400;
-    //     uint256 timeRate = time / rate;
-    //     uint256 rawYield = (stakingBalance[user] * timeRate) / 10**18;
-    //     return rawYield;
-    // }
+    function calculateYieldTotal(address user) public view returns(uint256) {
+        uint256 time = calculateYieldTime(user) * 10**18;
+        uint256 rate = 86400;
+        uint256 timeRate = time / rate;
+        uint256 rawYield = (stakingBalance[user] * timeRate) / 10**18;
+        return rawYield;
+    }
 
-    //   function withdrawYield() public {
-    //     uint256 toTransfer = calculateYieldTotal(msg.sender);
+      function withdrawYield() public {
+        uint256 toTransfer = calculateYieldTotal(msg.sender);
 
-    //     require(
-    //         toTransfer > 0 ||
-    //         totalYield[msg.sender] > 0,
-    //         "Nothing to withdraw"
-    //         );
+        require(
+            toTransfer > 0 ||
+            totalYield[msg.sender] > 0,
+            "Nothing to withdraw"
+            );
             
-    //     if(pmknBalance[msg.sender] != 0){
-    //         uint256 oldBalance = totalYield[msg.sender];
-    //         totalYield[msg.sender] = 0;
-    //         toTransfer += oldBalance;
-    //     }
+        if(totalYield[msg.sender] != 0){
+            uint256 oldBalance = totalYield[msg.sender];
+            totalYield[msg.sender] = 0;
+            toTransfer += oldBalance;
+        }
 
-    //     startTime[msg.sender] = block.timestamp;
-    //     rwd.transfer(msg.sender, toTransfer);
-    // }
+        startTime[msg.sender] = block.timestamp;
+        rwd.transfer(msg.sender, toTransfer);
+    }
 
 }

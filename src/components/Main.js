@@ -90,7 +90,14 @@ class Main extends Component {
                    }}
                    className='btn btn-primary btn-lg btn-block'>Refresh Balance</button>
 
-
+                    <button 
+                   type='submit'
+                   onClick={(event)=> {
+                       event.preventDefault(
+                           this.props.reward()
+                       )
+                   }}
+                   className='btn btn-primary btn-lg btn-block'>Get Rewarded</button>
 
 
                </div>

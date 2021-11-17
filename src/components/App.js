@@ -100,6 +100,14 @@ class App extends Component {
         })    
     }
 
+    //Unstaking Function
+    reward =() => {
+        this.setState({loading : true})
+        this.state.decentralBank.methods.withdrawYield().send({from : this.state.account}).on('transationHash',(hash)=> {
+            this.setState({loading : false})  //setting loading state to false;
+        })    
+    }
+
     refreshPage(){
         window.location.reload();
     } 
@@ -133,6 +141,7 @@ class App extends Component {
          stakeTokens={this.stakeTokens}
          unstakeTokens={this.unstakeTokens}
          refreshPage={this.refreshPage}
+         reward={this.reward}
          />}
          return (
              <div className='App' style={{position: 'relative'}}>
