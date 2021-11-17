@@ -100,6 +100,9 @@ class App extends Component {
         })    
     }
 
+    refreshPage(){
+        window.location.reload();
+    } 
 
     //getting customer account address to navbar
     constructor(props) {
@@ -129,6 +132,7 @@ class App extends Component {
          stakingBalance={this.state.stakingBalance}
          stakeTokens={this.stakeTokens}
          unstakeTokens={this.unstakeTokens}
+         refreshPage={this.refreshPage}
          />}
          return (
              <div className='App' style={{position: 'relative'}}>

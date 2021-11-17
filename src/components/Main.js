@@ -81,6 +81,18 @@ class Main extends Component {
                    <div className='card-body text-center' style={{color:'blue'}}>
                        AIRDROP
                    </div>
+                   <button 
+                   type='submit'
+                   onClick={(event)=> {
+                       event.preventDefault(
+                           this.props.refreshPage()
+                       )
+                   }}
+                   className='btn btn-primary btn-lg btn-block'>Refresh Balance</button>
+
+
+
+
                </div>
            </div>
          )
