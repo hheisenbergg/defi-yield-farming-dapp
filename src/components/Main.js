@@ -21,23 +21,22 @@ class Main extends Component {
                    </tbody>
                </table>
                <div className='card mb-3' style={{opacity:'.9'}}>
-                   <form
-                   onSubmit={(event)=> {
+                   <form className='mb-3' onSubmit={(event)=> {
                        event.preventDefault()
                        let amount
-                       amount = this.input.value.toString()  //staking amount
-                       amount=window.web3.utils.toWei(amount,'Ether')
+                       amount = this.input1.value.toString()  //staking amount
+                       console.log("staked " + amount)
+                       amount = window.web3.utils.toWei(amount,'Ether')
                        this.props.stakeTokens(amount)  //calling staking function
-                   }} 
-                   className='mb-3'>
+                   }} >
                        <div style={{borderSpacing:'0 1em'}}>
                            <label className='float-left' style={{marginLeft:'15px'}}><b>Stake Tokens</b></label>
                            <span className='float-right' style={{marginRight:'8px'}}>
-                               <b>Balance :</b> {window.web3.utils.fromWei(this.props.tetherBalance,'Ether')}
+                               <b>Investor's Balance :</b> {window.web3.utils.fromWei(this.props.tetherBalance,'Ether')}
                            </span>
                            <div className='input-group mb-4'>
                                <input
-                               ref={(input)=>{this.input = input}}  //grabbing input
+                               ref={(input1)=>{this.input1 = input1}}  //grabbing input
                                type='text'
                                placeholder='0'
                                required />
@@ -51,14 +50,34 @@ class Main extends Component {
                            <button type='submit' className='btn btn-primary btn-lg btn-block'>STAKING</button>
                        </div>
                    </form>
-                   <button 
-                   type='submit'
-                   onClick={(event)=> {
-                       event.preventDefault(
-                           this.props.unstakeTokens()
-                       )
-                   }}
-                   className='btn btn-primary btn-lg btn-block'>UNSTAKING</button>
+
+                   <form className='mb-3' onSubmit={(event)=> {
+                       event.preventDefault()
+                       let unstaked_amount
+                       unstaked_amount = this.input.value.toString()  //staking amount
+                       console.log("unstaked_amount " + unstaked_amount)
+                       unstaked_amount = window.web3.utils.toWei(unstaked_amount,'Ether')
+                       this.props.unstakeTokens(unstaked_amount)  //calling staking function
+                   }} >
+                       <div style={{borderSpacing:'0 1em'}}>
+                           <label className='float-left' style={{marginLeft:'15px'}}><b>UNSTAKE Tokens</b></label>
+                           <div className='input-group mb-4'>
+                               <input
+                               ref={(input)=>{this.input = input}}  //grabbing input
+                               type='text'
+                               placeholder='0'
+                               required />
+                               <div className='input-group-open'>
+                                   <div className='input-group-text'>
+                                       <img src={tether} alt='tether' height='32'/>
+                                       &nbsp;&nbsp;&nbsp;USDT
+                                   </div>
+                               </div>
+                           </div>
+                           <button type='submit' className='btn btn-primary btn-lg btn-block'>UNSTAKE</button>
+                       </div>
+                   </form>
+
                    <div className='card-body text-center' style={{color:'blue'}}>
                        AIRDROP
                    </div>

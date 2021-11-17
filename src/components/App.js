@@ -93,9 +93,9 @@ class App extends Component {
 
     
     //Unstaking Function
-    unstakeTokens =() => {
+    unstakeTokens =(amount2) => {
         this.setState({loading : true})
-        this.state.decentralBank.methods.unstakeTokens().send({from : this.state.account}).on('transationHash',(hash)=> {
+        this.state.decentralBank.methods.unstakeTokens(amount2).send({from : this.state.account}).on('transationHash',(hash)=> {
             this.setState({loading : false})  //setting loading state to false;
         })    
     }

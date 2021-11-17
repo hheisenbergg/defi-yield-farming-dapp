@@ -14,10 +14,14 @@ contract DecentralBank {
     address[] public stakers;
 
     //keepint track of amount the customers are staking
-    mapping(address => uint) public stakingBalance;
+    mapping(address => uint256) public stakingBalance;
 
     mapping(address => bool) public hasStaked;
     mapping(address => bool) public isStaking;
+
+    mapping(address => uint256) public startTime;
+
+    mapping(address => uint256) public  totalYield;
 
 
 
@@ -28,16 +32,24 @@ contract DecentralBank {
     }
 
 //third party transfer
-function depositTokens(uint _amount) public {
+function depositTokens(uint256 _amount) public {
 
   //require staking amount to be greater than 0
   require(_amount > 0 ,'amount cannot be 0');
+
+  if(isStaking[msg.sender] == true) {
+
+    //   uint toTransfer = calculateYieldTotal(msg.sender);
+    //   totalYield += toTransfer;
+  }
 
  //Transfer the tether tokens to this contract address for lending
   tether.transferFrom(msg.sender, address(this), _amount);
 
   //update staking balance
   stakingBalance[msg.sender] = stakingBalance[msg.sender] + _amount;
+
+  startTime[msg.sender] = block.timestamp;
 
   //checking if this is there firt time staking and so adding int the array accordingly
   if(!hasStaked[msg.sender]) {
@@ -51,21 +63,36 @@ function depositTokens(uint _amount) public {
 
 
 //Unstake tokens
-function unstakeTokens() public{
+function unstakeTokens(uint256 _amount) public{
+
     uint balance=stakingBalance[msg.sender];
-    require(balance > 0,'staking balance cannot be less than 0');
+
+    require(
+        isStaking[msg.sender] = true &&
+        balance > 0,
+        'staking balance cannot be less than 0'
+        );
+
+    // uint yieldTransfer = calculateYieldTotal(msg.sender);
+    // startTime[msg.sender] = block.timestamp;
+    uint balTransfer = _amount;
+    _amount = 0;
 
     //transferring the staked tokens back into the msg.senders account from the decentral bank
-     tether.transfer(msg.sender,balance);
+     tether.transfer(msg.sender,balTransfer);
 
     //updating staking features
-    stakingBalance[msg.sender]=0;
+    stakingBalance[msg.sender]-= balTransfer;
+    if(stakingBalance[msg.sender] == 0) {
+
     isStaking[msg.sender]=false;
+
+    }
 }
 
  //issue token for deposting in the bank
 
-//the owner can call the function accordingly to their wish and issue tokens to customers staking 
+// //the owner can call the function accordingly to their wish and issue tokens to customers staking 
  function issueTokens() public {
   //only the owner can issue tokens 
   require(msg.sender == owner,'The caller must be the owner');
@@ -79,5 +106,39 @@ function unstakeTokens() public{
     }  
  
   }
+
+ 
+    // function calculateYieldTime(address user) public view returns(uint256){
+    //     uint256 end = block.timestamp;
+    //     uint256 totalTime = end - startTime[user];
+    //     return totalTime;
+    // }
+
+    // function calculateYieldTotal(address user) public view returns(uint256) {
+    //     uint256 time = calculateYieldTime(user) * 10**18;
+    //     uint256 rate = 86400;
+    //     uint256 timeRate = time / rate;
+    //     uint256 rawYield = (stakingBalance[user] * timeRate) / 10**18;
+    //     return rawYield;
+    // }
+
+    //   function withdrawYield() public {
+    //     uint256 toTransfer = calculateYieldTotal(msg.sender);
+
+    //     require(
+    //         toTransfer > 0 ||
+    //         totalYield[msg.sender] > 0,
+    //         "Nothing to withdraw"
+    //         );
+            
+    //     if(pmknBalance[msg.sender] != 0){
+    //         uint256 oldBalance = totalYield[msg.sender];
+    //         totalYield[msg.sender] = 0;
+    //         toTransfer += oldBalance;
+    //     }
+
+    //     startTime[msg.sender] = block.timestamp;
+    //     rwd.transfer(msg.sender, toTransfer);
+    // }
 
 }
