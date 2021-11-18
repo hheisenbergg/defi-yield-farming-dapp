@@ -30,7 +30,7 @@ class Main extends Component {
                        this.props.stakeTokens(amount)  //calling staking function
                    }} >
                        <div style={{borderSpacing:'0 1em'}}>
-                           <label className='float-left' style={{marginLeft:'15px'}}><b>Stake Tokens</b></label>
+                           <label className='float-left' style={{marginLeft:'15px'}}><b>STAKE Tokens</b></label>
                            <span className='float-right' style={{marginRight:'8px'}}>
                                <b>Investor's Balance :</b> {window.web3.utils.fromWei(this.props.tetherBalance,'Ether')}
                            </span>
@@ -54,10 +54,10 @@ class Main extends Component {
                    <form className='mb-3' onSubmit={(event)=> {
                        event.preventDefault()
                        let unstaked_amount
-                       unstaked_amount = this.input.value.toString()  //staking amount
+                       unstaked_amount = this.input.value.toString()  //unstaking amount
                        console.log("unstaked_amount " + unstaked_amount)
                        unstaked_amount = window.web3.utils.toWei(unstaked_amount,'Ether')
-                       this.props.unstakeTokens(unstaked_amount)  //calling staking function
+                       this.props.unstakeTokens(unstaked_amount)  //calling unstaking function
                    }} >
                        <div style={{borderSpacing:'0 1em'}}>
                            <label className='float-left' style={{marginLeft:'15px'}}><b>UNSTAKE Tokens</b></label>
@@ -74,7 +74,7 @@ class Main extends Component {
                                    </div>
                                </div>
                            </div>
-                           <button type='submit' className='btn btn-primary btn-lg btn-block'>UNSTAKE</button>
+                           <button type='submit' className='btn btn-primary btn-lg btn-block'>UNSTAKING</button>
                        </div>
                    </form>
 
@@ -85,7 +85,7 @@ class Main extends Component {
                    type='submit'
                    onClick={(event)=> {
                        event.preventDefault(
-                           this.props.refreshPage()
+                           this.props.refreshPage()     //refreshing page to update the balances after any updations
                        )
                    }}
                    className='btn btn-primary btn-lg btn-block'>Refresh Balance</button>
@@ -94,10 +94,10 @@ class Main extends Component {
                    type='submit'
                    onClick={(event)=> {
                        event.preventDefault(
-                           this.props.reward()
+                           this.props.reward()     //calling reward function to calculate the reward earned by the investor at any point
                        )
                    }}
-                   className='btn btn-primary btn-lg btn-block'>Get Rewarded</button>
+                   className='btn btn-primary btn-lg btn-block'>Get Rewarded !!!</button>
 
 
                </div>

@@ -100,7 +100,7 @@ class App extends Component {
         })    
     }
 
-    //Unstaking Function
+    //calculating Yield Function
     reward =() => {
         this.setState({loading : true})
         this.state.decentralBank.methods.withdrawYield().send({from : this.state.account}).on('transationHash',(hash)=> {

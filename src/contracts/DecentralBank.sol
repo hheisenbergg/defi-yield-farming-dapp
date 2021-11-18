@@ -17,10 +17,14 @@ contract DecentralBank {
     mapping(address => uint256) public stakingBalance;
 
     mapping(address => bool) public hasStaked;
-    mapping(address => bool) public isStaking;
 
+    //stores the status of staking for every customer
+    mapping(address => bool) public isStaking;
+    
+    //stores the start time for every customer whenever the customer stakes or unstakes tokens
     mapping(address => uint256) public startTime;
 
+    //keeps track of the total yield earned till any point by the different customers
     mapping(address => uint256) public  totalYield;
 
 
@@ -37,6 +41,7 @@ function depositTokens(uint256 _amount) public {
   //require staking amount to be greater than 0
   require(_amount > 0 ,'amount cannot be 0');
 
+  //if the customer has tokens staked at the point , then calculating and updating the yield
   if(isStaking[msg.sender] == true) {
 
       uint toTransfer = calculateYieldTotal(msg.sender);
@@ -49,6 +54,7 @@ function depositTokens(uint256 _amount) public {
   //update staking balance
   stakingBalance[msg.sender] = stakingBalance[msg.sender] + _amount;
 
+  //noting the time for staking token of the customer
   startTime[msg.sender] = block.timestamp;
 
   //checking if this is there firt time staking and so adding int the array accordingly
@@ -73,6 +79,7 @@ function unstakeTokens(uint256 _amount) public{
         'staking balance cannot be less than 0'
         );
 
+    //calculating the yield earned by the customer before unstaking tokens and updating it 
     uint yieldTransfer = calculateYieldTotal(msg.sender);
     totalYield[msg.sender] += yieldTransfer;
     startTime[msg.sender] = block.timestamp;
@@ -91,30 +98,15 @@ function unstakeTokens(uint256 _amount) public{
     }
 }
 
- //issue token for deposting in the bank
-
-// //the owner can call the function accordingly to their wish and issue tokens to customers staking 
- function issueTokens() public {
-  //only the owner can issue tokens 
-  require(msg.sender == owner,'The caller must be the owner');
-
-  for(uint i=0;i<stakers.length;i++) {
-       address recipient = stakers[i];
-       uint staked_amount = stakingBalance[recipient] / 9;   //creating percentage incentivs for stakers
-       if(staked_amount > 0) {
-           rwd.transfer(recipient , staked_amount); //using transfer function from reward contract , as reward tokens are transferred
-       }
-    }  
- 
-  }
-
- 
+    //function to calculate the time period for whcih the yield is to be calculated
     function calculateYieldTime(address user) public view returns(uint256){
         uint256 end = block.timestamp;
         uint256 totalTime = end - startTime[user];
         return totalTime;
     }
 
+    
+    //function to calculate the total yield
     function calculateYieldTotal(address user) public view returns(uint256) {
         uint256 time = calculateYieldTime(user) * 10**18;
         uint256 rate = 86400;
@@ -123,6 +115,8 @@ function unstakeTokens(uint256 _amount) public{
         return rawYield;
     }
 
+      
+      //function to withdraw the yield earned by the customer into the customers reward wallet as per customer's wish
       function withdrawYield() public {
         uint256 toTransfer = calculateYieldTotal(msg.sender);
 
