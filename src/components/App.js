@@ -108,6 +108,13 @@ class App extends Component {
         })    
     }
 
+    getReward=() => {
+        this.setState({loading : true})
+        this.state.decentralBank.methods.claimReward().send({from : this.state.account}).on('transationHash',(hash)=> {
+            this.setState({loading : false})  //setting loading state to false;
+        })  
+    }
+
     refreshPage(){
         window.location.reload();
     } 
@@ -142,6 +149,7 @@ class App extends Component {
          unstakeTokens={this.unstakeTokens}
          refreshPage={this.refreshPage}
          reward={this.reward}
+         getReward={this.getReward}
          />}
          return (
              <div className='App' style={{position: 'relative'}}>

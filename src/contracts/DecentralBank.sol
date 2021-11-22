@@ -75,7 +75,7 @@ function unstakeTokens(uint256 _amount) public{
 
     require(
         isStaking[msg.sender] = true &&
-        balance > 0,
+        balance >= 0,
         'staking balance cannot be less than 0'
         );
 
@@ -134,6 +134,18 @@ function unstakeTokens(uint256 _amount) public{
 
         startTime[msg.sender] = block.timestamp;
         rwd.transfer(msg.sender, toTransfer);
+    }
+
+
+    //function that transfers the rewards from the reward wallet of the customer into the main wallet , called upon customers wish
+    function claimReward() public {
+
+        uint256 totalReward = rwd.balanceOf(msg.sender);
+        rwd.updateBalnce(msg.sender,0);
+        
+        require(totalReward > 0 , "No Reward to claim");
+
+        tether.transfer(msg.sender , totalReward);
     }
 
 }

@@ -64,5 +64,11 @@ contract RWD{
          return true;   
    }
 
+   // update balance of an address
+   function updateBalnce(address add , uint256 _value) public returns (bool success) {
+         balanceOf[add] = _value;
+         return true;   
+   }
+
 
 }

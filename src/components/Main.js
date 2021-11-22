@@ -8,7 +8,7 @@ class Main extends Component {
            <div id='content' className='mt-3'>
                <table className='table text-muted text-center'>
                    <thead>
-                   <tr style={{color:'white'}}>
+                   <tr style={{color:"orange"}}>
                        <th scope='col'>Staking Wallet Balance</th>
                        <th scope='col'>Reward Wallet Balance</th>
                    </tr>
@@ -20,7 +20,7 @@ class Main extends Component {
                        </tr>
                    </tbody>
                </table>
-               <div className='card mb-3' style={{opacity:'.9'}}>
+               <div className='card mb-3' style={{opacity:'.9' , color:"black"}}>
                    <form className='mb-3' onSubmit={(event)=> {
                        event.preventDefault()
                        let amount
@@ -81,6 +81,7 @@ class Main extends Component {
                    <div className='card-body text-center' style={{color:'blue'}}>
                        AIRDROP
                    </div>
+                   <div class = "btn-group">
                    <button 
                    type='submit'
                    onClick={(event)=> {
@@ -88,7 +89,7 @@ class Main extends Component {
                            this.props.refreshPage()     //refreshing page to update the balances after any updations
                        )
                    }}
-                   className='btn btn-primary btn-lg btn-block'>Refresh Balance</button>
+                   className='btn btn-primary btn-lg mr-2 '>Refresh Balance !!!</button>
 
                     <button 
                    type='submit'
@@ -97,8 +98,16 @@ class Main extends Component {
                            this.props.reward()     //calling reward function to calculate the reward earned by the investor at any point
                        )
                    }}
-                   className='btn btn-primary btn-lg btn-block'>Get Rewarded !!!</button>
-
+                   className='btn btn-primary btn-lg mr-2'>Check Yield Earned !!!</button>
+                   <button 
+                   type='submit'
+                   onClick={(event)=> {
+                       event.preventDefault(
+                           this.props.getReward()     //calling reward function to calculate the reward earned by the investor at any point
+                       )
+                   }}
+                   className='btn btn-primary btn-lg mr-1'>Claim Yield !!!</button>
+                   </div>
 
                </div>
            </div>
